@@ -8,38 +8,31 @@ using System.Threading.Tasks;
 
 namespace ListViewMemoryTester
 {
-    internal class StartupPage : ContentPage
+    internal class CollectionViewPage : ContentPage
     {
         public class DisplayItem
         {
             public string Name { get; set; }
         }
 
-        ListView listView;
-        public StartupPage()
+        CollectionView listView;
+        public CollectionViewPage()
         {
-            var button = new Button { Text = "Click to launch [CollectionView] page"};
-            button.Clicked += (s, e) => {
 
-                Navigation.PushAsync(new CollectionViewPage());
-            
-            };
-
-            listView = new ListView {
-                SeparatorVisibility = SeparatorVisibility.None,
-                SelectionMode = ListViewSelectionMode.Single
+            listView = new CollectionView {
+                SelectionMode = SelectionMode.Single
             };
 
             listView.ItemTemplate = new DataTemplate(()=> { 
             
                 var label = new Label();
                 label.SetBinding(Label.TextProperty, new Binding(nameof(DisplayItem.Name), BindingMode.OneWay));
-                return new ViewCell { View = label };            
+                return label;            
             });
 
             listView.ItemsSource = GenerateDisplayItems();
 
-            Content = new VerticalStackLayout { Children = { button, listView }, Margin = 10 };
+            Content = new VerticalStackLayout { Children = { listView } };
 
             ToolbarItems.Add(new ToolbarItem("Refresh", "ic_refresh.png", () => {
                 listView.ItemsSource = GenerateDisplayItems();
