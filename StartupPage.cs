@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace ListViewMemoryTester
 {
-    [PropertyChanged.AddINotifyPropertyChangedInterface]
-    internal class StartupPage : ContentPage, INotifyPropertyChanged
+    internal class StartupPage : ContentPage
     {
         public class DisplayItem
         {
@@ -19,8 +18,6 @@ namespace ListViewMemoryTester
         ListView listView;
         public StartupPage()
         {
-
-            BindingContext = this;
 
             listView = new ListView {
                 SeparatorVisibility = SeparatorVisibility.None,
@@ -34,21 +31,13 @@ namespace ListViewMemoryTester
                 return new ViewCell { View = label };            
             });
 
-            // listView.SetBinding(ListView.ItemsSourceProperty, new Binding(nameof(DisplayItems), BindingMode.OneWay));
             listView.ItemsSource = GenerateDisplayItems();
 
             Content = new VerticalStackLayout { Children = { listView } };
 
-            ToolbarItems.Add(new ToolbarItem("Refresh", "", () => {
+            ToolbarItems.Add(new ToolbarItem("Refresh", "ic_refresh.png", () => {
                 listView.ItemsSource = GenerateDisplayItems();
-                // DisplayItems = GenerateDisplayItems();
              }));
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            DisplayItems = GenerateDisplayItems();
         }
 
         public List<DisplayItem> GenerateDisplayItems()
@@ -62,9 +51,4 @@ namespace ListViewMemoryTester
         }
     }
 
-
-    public class StartupPageModel
-    {
-
-    }
 }
